@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>OTRA CIUDAD</title>
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body class="page-home">
+    <header class="topbar">
+        <div class="topbar__inner">
+            <a class="brand" href="/" aria-label="Ir al inicio">
+                OTRA CIUDAD
+            </a>
+
+            <nav class="topnav" aria-label="Navegación principal">
+                <a href="/about.html">About us</a>
+                <a href="/projects.html">Projects</a>
+                <a href="/contact.html">Contact us</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="home">
+        <section class="hero" aria-label="Carrusel de imágenes">
+            <div class="heroSlider" id="heroSlider">
+                <img class="heroSlide is-active" alt="" />
+                <img class="heroSlide" alt="" />
+            </div>
+
+            <noscript>
+                <img class="hero__img" src="/assets/images/01.Otra Ciudad_Paris.jpg" alt="" />
+            </noscript>
+        </section>
+
+        <script src="/js/hero-carousel.js"></script>
+
+        <!-- Fallback si aún no existe la imagen -->
+        <div class="hero__fallback" style="display:none;">
+            <div>
+                <p class="hero__fallbackTitle">Hero image placeholder</p>
+                <p class="hero__fallbackSub">Sube un archivo en <code>/assets/uploads/hero.jpg</code></p>
+            </div>
+        </div>
+        </section>
+    </main>
+
+    <!-- Si luego quieres inyectar textos desde content/site.json, puedes volver a incluir main.js -->
+    <!-- <script src="/js/main.js"></script> -->
+</body>
+
+</html>

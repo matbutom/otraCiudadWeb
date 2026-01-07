@@ -1,0 +1,16 @@
+{
+  "intervalMs": 3500,
+  "images": [
+    "/assets/images/00.Plazas de Bolsillo_Santiago.JPG",
+    "/assets/images/01.Otra Ciudad_Paris.jpg",
+    "/assets/images/02.Otra Ciudad_Paris.jpg",
+    "/assets/images/03.Otra Ciudad de México.jpg",
+    "/assets/images/04.Otra Ciudad_Santiago.jpg",
+    "/assets/images/05.Otra Ciudad_Tlaxcala.jpg",
+    "/assets/images/06.Otra Ciudad_Boston.jpg",
+    "/assets/images/07.Otra Ciudad_New York.jpg",
+    "/assets/images/08.Otra Ciudad_Ciudad de Juárez.jpg",
+    "/assets/images/09.Otra Ciudad_Ciudad de Juárez.jpg",
+    "/assets/images/10.Otra Ciudad_Boston.jpg"
+  ]
+}
