@@ -12,8 +12,9 @@
     <header class="topbar">
         <div class="topbar__inner">
             <a class="brand" href="/" aria-label="Ir al inicio">
-                OTRA CIUDAD
+                <img class="brand__logo" src="/assets/uploads/otraCiudad_03.png" alt="Otra Ciudad" />
             </a>
+
 
             <nav class="topnav" aria-label="Navegación principal">
                 <a href="/about.html">About us</a>
@@ -24,6 +25,8 @@
     </header>
 
     <main class="home">
+
+        <!-- HERO (carrusel existente) -->
         <section class="hero" aria-label="Carrusel de imágenes">
             <div class="heroSlider" id="heroSlider">
                 <img class="heroSlide is-active" alt="" />
@@ -31,20 +34,165 @@
             </div>
 
             <noscript>
-                <img class="hero__img" src="/assets/images/01.Otra Ciudad_Paris.jpg" alt="" />
+                <img class="hero__img" src="/assets/images/otraCiudad_01.png" alt="" />
             </noscript>
         </section>
 
-        <script src="/js/hero-carousel.js"></script>
-
-        <!-- Fallback si aún no existe la imagen -->
-        <div class="hero__fallback" style="display:none;">
-            <div>
-                <p class="hero__fallbackTitle">Hero image placeholder</p>
-                <p class="hero__fallbackSub">Sube un archivo en <code>/assets/uploads/hero.jpg</code></p>
+        <!-- BLOQUE CELESTE CON TEXTO GRANDE -->
+        <section class="band" aria-label="Texto introductorio">
+            <div class="band__inner">
+                <p class="band__text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat.
+                </p>
             </div>
-        </div>
         </section>
+
+        <!-- LISTA / HOME PROJECTS (placeholders) -->
+        <section class="homeProjects" aria-label="Proyectos destacados">
+            <div class="homeProjects__inner">
+
+                <!-- COLUMNA IZQUIERDA: items -->
+                <div class="homeProjects__left">
+
+                    <article class="projItem">
+                        <p class="projItem__kicker">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                        </p>
+                        <div class="projItem__row">
+                            <h2 class="projItem__title">Chromatic<br />Rings</h2>
+                            <p class="projItem__place">Brooklyn, New York</p>
+                        </div>
+                        <p class="projItem__desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                            commodo consequat.
+                        </p>
+                    </article>
+
+                    <article class="projItem">
+                        <div class="projItem__row">
+                            <h2 class="projItem__title">Barrios<br />Caminables</h2>
+                            <p class="projItem__place">Santiago, Chile</p>
+                        </div>
+                        <p class="projItem__desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                        </p>
+                    </article>
+
+                    <article class="projItem">
+                        <div class="projItem__row">
+                            <h2 class="projItem__title">Azotea<br />Torre 12</h2>
+                            <p class="projItem__place">Santiago, Chile</p>
+                        </div>
+                        <p class="projItem__desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                        </p>
+                    </article>
+
+                    <article class="projItem">
+                        <div class="projItem__row">
+                            <h2 class="projItem__title">Multicancha<br />Color</h2>
+                            <p class="projItem__place">Ciudad de México</p>
+                        </div>
+                        <p class="projItem__desc">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.
+                        </p>
+                    </article>
+
+                </div>
+
+                <!-- COLUMNA DERECHA: imágenes apiladas -->
+                <section class="homeProjects" aria-label="Proyectos destacados">
+                    <div class="homeProjects__inner">
+
+                        <div class="homeRow">
+                            <article class="projItem">
+                                <p class="projItem__kicker">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.
+                                </p>
+                                <div class="projItem__row">
+                                    <h2 class="projItem__title">Chromatic<br />Rings</h2>
+                                    <p class="projItem__place">Brooklyn, New York</p>
+                                </div>
+                                <p class="projItem__desc">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.
+                                </p>
+                            </article>
+
+                            <img class="stackImg" src="/assets/images/03.Otra Ciudad_Ciudad de México.jpg" alt="" />
+                        </div>
+
+                        <div class="homeRow">
+                            <article class="projItem">
+                                <div class="projItem__row">
+                                    <h2 class="projItem__title">Barrios<br />Caminables</h2>
+                                    <p class="projItem__place">Santiago, Chile</p>
+                                </div>
+                                <p class="projItem__desc">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.
+                                </p>
+                            </article>
+
+                            <img class="stackImg" src="/assets/images/04.Otra Ciudad_Santiago.jpg" alt="" />
+                        </div>
+
+                        <div class="homeRow">
+                            <article class="projItem">
+                                <div class="projItem__row">
+                                    <h2 class="projItem__title">Azotea<br />Torre 12</h2>
+                                    <p class="projItem__place">Santiago, Chile</p>
+                                </div>
+                                <p class="projItem__desc">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.
+                                </p>
+                            </article>
+
+                            <img class="stackImg" src="/assets/images/05.Otra Ciudad_Tlaxcala.jpg" alt="" />
+                        </div>
+
+                        <div class="homeRow">
+                            <article class="projItem">
+                                <div class="projItem__row">
+                                    <h2 class="projItem__title">Multicancha<br />Color</h2>
+                                    <p class="projItem__place">Ciudad de México</p>
+                                </div>
+                                <p class="projItem__desc">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.
+                                </p>
+                            </article>
+
+                            <img class="stackImg" src="/assets/images/06.Otra Ciudad_Boston.jpg" alt="" />
+                        </div>
+
+                    </div>
+                </section>
+
+    </main>
+
+    <script src="/js/hero-carousel.js"></script>
+
+
+    <!-- Fallback si aún no existe la imagen -->
+    <div class="hero__fallback" style="display:none;">
+        <div>
+            <p class="hero__fallbackTitle">Hero image placeholder</p>
+            <p class="hero__fallbackSub">Sube un archivo en <code>/assets/uploads/hero.jpg</code></p>
+        </div>
+    </div>
+    </section>
     </main>
 
     <!-- Si luego quieres inyectar textos desde content/site.json, puedes volver a incluir main.js -->

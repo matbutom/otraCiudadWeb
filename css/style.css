@@ -2,6 +2,11 @@
    HOME (según captura Figma)
    ========================= */
 
+:root{
+  --topbar-h: 60px;
+}
+
+html, body { height: 100%; }
 .page-home{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -12,7 +17,7 @@
 .page-home a{ color:inherit; text-decoration:none; }
 
 .topbar{
-  height:72px;
+  height: var(--topbar-h);
   background:#7cc6ff; /* celeste como la captura */
 }
 
@@ -25,11 +30,17 @@
 }
 
 .brand{
-  font-weight:800;
-  letter-spacing:0.02em;
-  text-transform:uppercase;
-  font-size:22px;
-  line-height:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 0; /* ayuda a centrar verticalmente */
+}
+
+.brand__logo{
+  height: 60px;  
+  width:auto;
+  display:block;
+  object-fit:contain;
 }
 
 .topnav{
@@ -51,7 +62,7 @@
 /* Hero ocupa toda la pantalla menos la barra */
 .home{ margin:0; }
 .hero{
-  height:calc(100vh - 72px);
+  height: calc(100vh - var(--topbar-h));
   width:100%;
   position:relative;
   overflow:hidden;
@@ -88,20 +99,9 @@
   opacity:.7;
 }
 
-/* Responsive: reduce gap en pantallas chicas */
-@media (max-width: 900px){
-  .topnav{ gap:40px; font-size:16px; }
-  .brand{ font-size:18px; }
-}
-
-@media (max-width: 520px){
-  .topbar__inner{ padding:0 12px; }
-  .topnav{ gap:18px; font-size:15px; }
-}
-
 /* ===== Hero Carousel ===== */
 .heroSlider{
-  height:calc(100vh - 72px);
+  height: calc(100vh - var(--topbar-h));
   width:100%;
   position:relative;
   overflow:hidden;
@@ -127,4 +127,187 @@
 /* Respeta accesibilidad */
 @media (prefers-reduced-motion: reduce){
   .heroSlide{ transition:none; }
+}
+
+/* =========================
+   LANDING SCROLLEABLE (mock)
+   ========================= */
+
+/* Bloque celeste con texto grande */
+.band{
+  background:#7cc6ff;
+  padding:28px 18px 34px;
+}
+
+.band__inner{
+  max-width:1300px;
+  margin:0 auto;
+}
+
+.band__text{
+  margin:0;
+  font-size:22px;
+  line-height:1.15;
+  letter-spacing:-0.01em;
+  max-width:52ch;
+}
+
+/* Sección editorial de proyectos */
+.homeProjects{
+  background:#fff;
+  padding:26px 18px 70px;
+}
+
+.homeProjects__inner{
+  max-width:1040px;
+  margin:0 auto;
+}
+
+/* Cada proyecto = 1 fila con 2 columnas: texto + imagen */
+.homeRow{
+  display:grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap:22px;
+  align-items:start;
+  padding:10px 0 18px;
+  border-top:1px solid #e9e9e9;
+}
+
+.homeRow:first-child{
+  border-top:0;
+  padding-top:0;
+}
+
+/* El artículo ya no necesita borde propio */
+.projItem{
+  padding:0;
+  border-top:0;
+}
+
+/* Imagen: si quieres consistencia visual, fija proporción */
+.stackImg{
+  width:100%;
+  aspect-ratio: 16 / 10;   /* ajusta si quieres 4/3, 16/9, etc */
+  height:auto;
+  object-fit:cover;
+  display:block;
+  border-radius:2px;
+  background:#f1f1f1;
+  border:1px solid #eee;
+}
+
+/* Responsive: en móvil texto arriba, imagen abajo */
+@media (max-width: 900px){
+  .homeRow{
+    grid-template-columns: 1fr;
+  }
+  .stackImg{
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Columna izquierda */
+.projItem{
+  padding:10px 0 18px;
+  border-top:1px solid #e9e9e9;
+}
+
+.projItem:first-child{
+  border-top:0;
+  padding-top:0;
+}
+
+.projItem__kicker{
+  margin:0 0 14px;
+  font-size:12px;
+  line-height:1.35;
+  opacity:.75;
+  max-width:62ch;
+}
+
+.projItem__row{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:14px;
+  margin:0 0 12px;
+}
+
+.projItem__title{
+  margin:0;
+  font-size:46px;
+  line-height:0.92;
+  letter-spacing:-0.02em;
+  font-weight:800;
+}
+
+.projItem__place{
+  margin:0 0 6px;
+  font-size:14px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+.projItem__desc{
+  margin:0;
+  font-size:12px;
+  line-height:1.4;
+  opacity:.75;
+  max-width:66ch;
+}
+
+/* Columna derecha: imágenes apiladas */
+.homeProjects__right{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.stackImg{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:2px;
+  background:#f1f1f1;
+  border:1px solid #eee;
+}
+
+/* =========================
+   Responsive
+   ========================= */
+@media (max-width: 900px){
+  .topnav{ gap:40px; font-size:16px; }
+  .brand__logo{ height:22px; }
+
+  .homeProjects__inner{
+    grid-template-columns: 1fr;
+  }
+
+  .projItem__title{
+    font-size:38px;
+  }
+
+  .projItem__row{
+    align-items:flex-start;
+  }
+
+  .projItem__place{
+    white-space:normal;
+    text-align:right;
+  }
+
+  .band__text{
+    font-size:20px;
+  }
+}
+
+@media (max-width: 520px){
+  .topbar__inner{ padding:0 12px; }
+  .topnav{ gap:18px; font-size:15px; }
+  .brand__logo{ height:20px; }
+
+  .projItem__title{ font-size:34px; }
+
+  .band{ padding:22px 14px 28px; }
+  .homeProjects{ padding:22px 14px 56px; }
 }
