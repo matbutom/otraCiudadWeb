@@ -13,7 +13,12 @@
     <header class="topbar">
         <div class="topbar__inner">
             <a class="brand" href="index.html" aria-label="Ir al inicio">
-                <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
+                <picture>
+                    <!-- desktop (desde 521px hacia arriba) -->
+                    <source media="(min-width: 521px)" srcset="assets/uploads/otraCiudad_03.png" />
+                    <!-- mobile (hasta 520px) -->
+                    <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
+                </picture>
             </a>
 
             <nav class="topnav" aria-label="Navegación principal">
@@ -27,7 +32,7 @@
                 <span class="menuBtn__bar" aria-hidden="true"></span>
                 <span class="menuBtn__bar" aria-hidden="true"></span>
             </button>
-            
+
         </div>
     </header>
 
