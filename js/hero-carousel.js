@@ -7,10 +7,14 @@
 
   const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
+  // base path del sitio (sirve para github pages /repo/ y para local)
+  // ejemplo: /otraCiudadWeb/index.html -> /otraCiudadWeb/
+  const basePath = window.location.pathname.replace(/\/[^\/]*$/, "/");
+
   // Carga lista desde JSON
   let data;
   try{
-    const res = await fetch("/content/hero-images.json", { cache: "no-store" });
+    const res = await fetch(basePath + "content/hero-images.json", { cache: "no-store" });
     if(!res.ok) throw new Error("No se pudo cargar hero-images.json");
     data = await res.json();
   }catch(err){
@@ -18,8 +22,15 @@
     return;
   }
 
-  const images = Array.isArray(data.images) ? data.images.filter(Boolean) : [];
-  if (images.length === 0) return;
+  const imagesRaw = Array.isArray(data.images) ? data.images.filter(Boolean) : [];
+  if (imagesRaw.length === 0) return;
+
+  // normaliza rutas del json:
+  // - quita slash inicial si viene con "/assets/..."
+  // - y construye url correcta dentro del subpath del repo
+  const images = imagesRaw
+    .map(src => String(src).replace(/^\//, ""))
+    .map(src => basePath + src);
 
   const intervalMs = Number(data.intervalMs) || 3500;
 
