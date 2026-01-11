@@ -1,21 +1,17 @@
+* {
+  box-sizing: border-box;
+}
+
 :root {
   --topbar-h: 60px;
 
   /* Tipografías */
   --font-body: area-inktrap, sans-serif;
   --font-title: vinila-variable, sans-serif;
+
   /* Proyectos: columna derecha fija + máscara */
   --img-col-w: 520px;
   --img-col-h: 320px;
-}
-
-.page-home {
-  margin: 0;
-  font-family: var(--font-body);
-  font-style: normal;
-  font-weight: 100; /* Area Inktrap light según tu snippet */
-  background: #fff;
-  color: #111;
 }
 
 html,
@@ -29,10 +25,9 @@ body {
   color: #111;
   font-family: var(--font-body);
   font-style: normal;
-  font-weight: 400; /* base para texto */
+  font-weight: 400;
 }
 
-/* Tu clase del body (si la usas en <body class="page-home">) */
 .page-home {
   margin: 0;
   background: #fff;
@@ -59,6 +54,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 18px;
+  gap: 14px;
 }
 
 .brand {
@@ -89,6 +85,24 @@ body {
 .topnav a:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+/* botón hamburguesa: oculto en desktop */
+.menuBtn {
+  display: none;
+  background: transparent;
+  border: 0;
+  padding: 10px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.menuBtn__bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #111;
+  margin: 5px 0;
 }
 
 /* ===== Hero ===== */
@@ -147,7 +161,6 @@ body {
    LANDING SCROLLEABLE (mock)
    ========================= */
 
-/* Bloque celeste con texto grande */
 .band {
   background: #7cc6ff;
   padding: 28px 18px 34px;
@@ -185,7 +198,7 @@ body {
 /* Cada proyecto = una fila con 2 columnas */
 .homeRow {
   display: grid;
-  grid-template-columns: 1fr var(--img-col-w);
+  grid-template-columns: minmax(0, 1fr) var(--img-col-w);
   gap: 22px;
   align-items: start;
   padding: 10px 0 18px;
@@ -197,47 +210,13 @@ body {
   padding-top: 0;
 }
 
-/* 1) Que la columna izquierda pueda encogerse sin empujar la derecha */
-.homeRow{
-  grid-template-columns: minmax(0, 1fr) var(--img-col-w);
-}
-
-/* 2) Permite que el contenido dentro del grid se “encoga” */
-.projItem{
-  min-width: 0;
-}
-
-/* 3) Asegura que la imagen quede siempre alineada igual */
-.imgMask{
-  justify-self: end;
-  width: var(--img-col-w);
-}
-
-/* 4) Evita que la ubicación larga empuje el layout:
-      opción A: que haga ellipsis (recomendado si quieres una sola línea) */
-.projItem__place{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: wrap;
-  max-width: 1200px; /* ajusta según tu diseño */
-}
-
-
-/* Texto */
 .projItem {
   padding: 0;
   border: 0;
   display: flex;
   flex-direction: column;
-  height: var(--img-col-h); /* igual a la máscara */
-}
-
-.projItem__kicker {
-  margin: 0 0 10px;
-  font-size: 12px;
-  line-height: 1.35;
-  opacity: 0.75;
-  max-width: 62ch;
+  height: var(--img-col-h);
+  min-width: 0;
 }
 
 .projItem__row {
@@ -251,8 +230,8 @@ body {
 .projItem__title {
   font-family: var(--font-title);
   font-style: normal;
-  font-weight: 800; /* variable font: déjalo en 400 para no forzar */
-  font-variation-settings: "wdth" 80; /* más condensada: prueba 60–90 */
+  font-weight: 800;
+  font-variation-settings: "wdth" 80;
   margin: 0;
   font-size: 70px;
   line-height: 0.92;
@@ -279,12 +258,13 @@ body {
 
 /* Máscara (crop) */
 .imgMask {
-  width: 100%;
+  width: var(--img-col-w);
   height: var(--img-col-h);
   overflow: hidden;
   border-radius: 2px;
   background: #f1f1f1;
   border: 1px solid #eee;
+  justify-self: end;
 }
 
 .stackImg {
@@ -293,21 +273,6 @@ body {
   object-fit: cover;
   object-position: center;
   display: block;
-}
-
-/* Fix de alineación y medidas consistentes */
-* {
-  box-sizing: border-box;
-}
-
-.imgMask {
-  display: block;
-  width: var(--img-col-w);
-  justify-self: end;
-}
-
-.stackImg {
-  display: block; /* evita alineación tipo “inline” */
 }
 
 /* =========================
@@ -326,8 +291,10 @@ body {
     gap: 40px;
     font-size: 16px;
   }
+
   .brand__logo {
     height: 22px;
+    z-index: 210;
   }
 
   .band__text {
@@ -337,19 +304,25 @@ body {
   .homeRow {
     grid-template-columns: 1fr;
   }
+
   .imgMask {
+    width: 100%;
+    justify-self: stretch;
     height: 240px;
   }
 
   .projItem {
     height: auto;
   }
+
   .projItem__title {
-    font-size: 38px;
+    font-size: 58px;
   }
+
   .projItem__row {
     align-items: flex-start;
   }
+
   .projItem__place {
     white-space: normal;
     text-align: right;
@@ -357,25 +330,139 @@ body {
 }
 
 @media (max-width: 520px) {
-  .topbar__inner {
-    padding: 0 12px;
-  }
-  .topnav {
-    gap: 18px;
-    font-size: 15px;
-  }
-  .brand__logo {
-    height: 20px;
+  :root {
+    --topbar-h: 56px;
   }
 
-  .projItem__title {
-    font-size: 34px;
+  /* header fijo arriba (debe quedar sobre el overlay) */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200; /* <-- clave */
+    background: #7cc6ff;
   }
 
+  /* para que el contenido no se vaya debajo del header fijo */
+  .hero {
+    margin-top: var(--topbar-h);
+  }
   .band {
-    padding: 22px 14px 28px;
+    margin-top: 0;
   }
-  .homeProjects {
-    padding: 22px 14px 56px;
+
+  .topbar__inner {
+    position: relative;
+    height: var(--topbar-h);
+    padding: 0 14psx;
+    z-index: 210; /* <-- arriba del nav */
+  }
+
+  /* logo móvil */
+  .brand__logo {
+    height: 34px;
+    width: auto;
+  }
+
+  /* botón hamburguesa visible */
+  .menuBtn {
+    position: relative;
+    z-index: 230; /* <-- clave: la X siempre arriba */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .menuBtn__bar {
+    position: absolute;
+    left: 50%;
+    top: 35%;
+    width: 30px;
+    height: 3px;
+    background: #111;
+    border-radius: 1px;
+    transform: translate(-50%, -50%);
+    transition: transform 180ms ease, opacity 180ms ease;
+  }
+
+  /* 3 barras: arriba / centro / abajo */
+  .menuBtn__bar:nth-child(1) {
+    transform: translate(-50%, -50%) translateY(-8px);
+  }
+  .menuBtn__bar:nth-child(2) {
+    transform: translate(-50%, -50%);
+  }
+  .menuBtn__bar:nth-child(3) {
+    transform: translate(-50%, -50%) translateY(8px);
+  }
+
+  /* nav -> overlay pantalla completa (debajo del header) */
+  .topnav {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background: #7cc6ff;
+    z-index: 150; /* <-- menor que topbar */
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 44px;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+
+  .topnav a {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.05;
+  }
+
+  /* estado abierto */
+  body.menu-open .topnav {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* abierto: X con 2 barras + ocultar la del medio */
+  body.menu-open .menuBtn__bar:nth-child(1) {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  body.menu-open .menuBtn__bar:nth-child(2) {
+    opacity: 0;
+  }
+  body.menu-open .menuBtn__bar:nth-child(3) {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  /* más aire en proyectos en móvil también */
+  .projItem__desc {
+    margin: 0 0 16px;
+    font-size: 18px;
+    line-height: 1.45;
+  }
+
+  .homeRow {
+    padding: 24px 0 28px;
+    gap: 14px;
+    grid-template-columns: 1fr;
+  }
+
+  /* imagen arriba, texto abajo */
+  .imgMask {
+    order: -1;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    justify-self: stretch;
   }
 }
