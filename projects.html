@@ -37,66 +37,7 @@
         <div class="projects__container">
             <!-- Lista de proyectos se carga dinámicamente -->
             <div id="projectsList" class="projects__list">
-                <!-- Proyectos de ejemplo (se reemplazarán con JS) -->
-                <a href="project.html?project=chromatic-rings" class="projectCard">
-                    <div class="projectCard__imgWrap">
-                        <img class="projectCard__img" src="assets/images/07.Otra Ciudad_New York.jpg" alt="Chromatic Rings" />
-                    </div>
-                    <h2 class="projectCard__title">Chromatic Rings</h2>
-                    <div class="projectCard__meta">
-                        <span class="projectCard__label">Location:</span>
-                        <span class="projectCard__location">Brooklyn, New York</span>
-                    </div>
-                    <div class="projectCard__meta">
-                        <span class="projectCard__label">Year</span>
-                        <span class="projectCard__year">2018</span>
-                    </div>
-                </a>
-
-                <a href="project.html?project=barrios-caminables" class="projectCard">
-                    <div class="projectCard__imgWrap">
-                        <img class="projectCard__img" src="assets/images/04.Otra Ciudad_Santiago.jpg" alt="Barrios Caminables" />
-                    </div>
-                    <h2 class="projectCard__title">Barrios Caminables</h2>
-                    <div class="projectCard__meta">
-                        <span class="projectCard__label">Location:</span>
-                        <span class="projectCard__location">Santiago, Chile</span>
-                    </div>
-                    <div class="projectCard__meta">
-                        <span class="projectCard__label">Year</span>
-                        <span class="projectCard__year">2019</span>
-                    </div>
-                </a>
-
-                <a href="project.html?project=azotea-torre-12" class="projectCard">
-                    <div class="projectCard__imgWrap">
-                        <img class="projectCard__img" src="assets/images/05.Otra Ciudad_Tlaxcala.jpg" alt="Azotea Torre 12" />
-                    </div>
-                    <h2 class="projectCard__title">Azotea Torre 12</h2>
-                    <div class="projectCard__meta">
-                        <span class="projectCard__label">Location:</span>
-                        <span class="projectCard__location">Santiago, Chile</span>
-                    </div>
-                    <div class="projectCard__meta">
-                        <span class="projectCard__label">Year</span>
-                        <span class="projectCard__year">2020</span>
-                    </div>
-                </a>
-
-                <a href="project.html?project=multicancha-color" class="projectCard">
-                    <div class="projectCard__imgWrap">
-                        <img class="projectCard__img" src="assets/images/06.Otra Ciudad_Boston.jpg" alt="Multicancha Color" />
-                    </div>
-                    <h2 class="projectCard__title">Multicancha Color</h2>
-                    <div class="projectCard__meta">
-                        <span class="projectCard__label">Location:</span>
-                        <span class="projectCard__location">Ciudad de México, México</span>
-                    </div>
-                    <div class="projectCard__meta">
-                        <span class="projectCard__label">Year</span>
-                        <span class="projectCard__year">2021</span>
-                    </div>
-                </a>
+                <!-- Los proyectos se cargarán aquí automáticamente desde el CMS -->
             </div>
         </div>
     </main>
@@ -137,6 +78,11 @@
                 ? '/otraCiudadWeb' 
                 : '';
 
+            const projectsList = document.getElementById('projectsList');
+            
+            // Mostrar mensaje de carga
+            projectsList.innerHTML = '<p style="padding: 40px; text-align: center; color: #999;">Cargando proyectos...</p>';
+
             // Cargar el índice de proyectos
             fetch(`${basePath}/content/projects-index.json`)
                 .then(res => {
@@ -144,10 +90,20 @@
                     return res.json();
                 })
                 .then(data => {
-                    const projectsList = document.getElementById('projectsList');
-                    
                     // Ordenar proyectos por 'order' si existe
                     const projects = data.projects || data;
+                    
+                    // Si no hay proyectos, mostrar mensaje amigable
+                    if (!projects || projects.length === 0) {
+                        projectsList.innerHTML = `
+                            <div style="padding: 80px 20px; text-align: center;">
+                                <h2 style="font-family: var(--font-title); font-size: 48px; margin: 0 0 20px; font-weight: 800; line-height: 1;">No hay proyectos aún</h2>
+                                <p style="font-size: 18px; color: #666; margin: 0;">Los proyectos aparecerán aquí cuando los crees desde el CMS.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
                     const sortedProjects = projects.sort((a, b) => (a.order || 0) - (b.order || 0));
 
                     // Generar HTML para cada proyecto
@@ -172,8 +128,12 @@
                 })
                 .catch(err => {
                     console.error('Error cargando proyectos:', err);
-                    document.getElementById('projectsList').innerHTML = 
-                        '<p style="padding: 40px; text-align: center;">No se pudieron cargar los proyectos.</p>';
+                    projectsList.innerHTML = `
+                        <div style="padding: 80px 20px; text-align: center;">
+                            <h2 style="font-family: var(--font-title); font-size: 48px; margin: 0 0 20px; font-weight: 800; line-height: 1;">No hay proyectos aún</h2>
+                            <p style="font-size: 18px; color: #666; margin: 0;">Crea tu primer proyecto desde el <a href="/admin" style="text-decoration: underline;">CMS</a>.</p>
+                        </div>
+                    `;
                 });
         })();
     </script>
