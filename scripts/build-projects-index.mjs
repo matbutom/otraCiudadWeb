@@ -1,68 +1,66 @@
-import fs from 'fs';
-import path from 'path';
+import { readdir, readFile, writeFile } from 'fs/promises';
+import { join } from 'path';
 
-const projectsDir = './content/projects';
-const templatePath = './templates/project-template.html';
-const outputFolder = './proyectos';
+const PROJECTS_DIR = './content/projects';
+const INDEX_FILE = './content/projects-index.json';
 
-if (!fs.existsSync(outputFolder)) fs.mkdirSync(outputFolder);
+async function buildProjectsIndex() {
+  try {
+    console.log('🔨 Generando projects-index.json...');
 
-async function build() {
-    try {
-        const template = fs.readFileSync(templatePath, 'utf-8');
-        const files = fs.readdirSync(projectsDir).filter(f => f.endsWith('.json'));
+    // Leer todos los archivos en content/projects/
+    const files = await readdir(PROJECTS_DIR);
+    
+    // Filtrar solo archivos .json
+    const jsonFiles = files.filter(file => file.endsWith('.json'));
+    
+    console.log(`📄 Encontrados ${jsonFiles.length} proyectos`);
+
+    const projects = [];
+
+    // Leer cada archivo JSON
+    for (const file of jsonFiles) {
+      const filePath = join(PROJECTS_DIR, file);
+      const content = await readFile(filePath, 'utf8');
+      
+      try {
+        const project = JSON.parse(content);
         
-        const allProjects = files.map(file => {
-            const filePath = path.join(projectsDir, file);
-            const rawContent = fs.readFileSync(filePath, 'utf-8').trim();
-            
-            // 1. Omitir si el archivo está vacío
-            if (!rawContent) {
-                console.warn(`⚠️ Saltando archivo vacío: ${file}`);
-                return null;
-            }
-
-            try {
-                const data = JSON.parse(rawContent);
-                if (!data.slug) return null; // Ignorar si no tiene slug
-
-                // 2. Generar HTML Individual
-                let html = template
-                    .replace(/{{title}}/g, data.title || '')
-                    .replace(/{{description}}/g, data.description || '')
-                    .replace(/{{year}}/g, data.year || '')
-                    .replace(/{{client}}/g, data.client || '')
-                    .replace(/{{location}}/g, data.location || '');
-
-                const partnersHtml = (data.partners || []).map(p => `<p>${p.partner || p}</p>`).join('');
-                html = html.replace('{{partners}}', partnersHtml);
-
-                const galleryHtml = (data.images || []).map(img => {
-                    const src = img.image || img;
-                    return `<img class="project__img" src="../${src}" alt="${data.title}" />`;
-                }).join('');
-                html = html.replace('{{gallery}}', galleryHtml);
-
-                fs.writeFileSync(path.join(outputFolder, `${data.slug}.html`), html);
-                return data;
-
-            } catch (parseError) {
-                // 3. Informar qué archivo específico tiene el error
-                console.error(`❌ Error de formato JSON en: ${file}`);
-                return null;
-            }
-        }).filter(p => p !== null);
-
-        // 4. Guardar índices finales
-        fs.writeFileSync('./content/projects-index.json', JSON.stringify({ projects: allProjects }, null, 2));
-        const featured = allProjects.filter(p => p.featured === true);
-        fs.writeFileSync('./content/featured-projects.json', JSON.stringify({ projects: featured }, null, 2));
-
-        console.log(`✅ Éxito: Se generaron ${allProjects.length} proyectos.`);
-    } catch (e) {
-        console.error("❌ Error crítico:", e);
-        process.exit(1);
+        // Extraer solo los campos necesarios para el índice
+        projects.push({
+          slug: project.slug || file.replace('.json', ''),
+          title: project.title || 'Sin título',
+          location: project.location || '',
+          year: project.year || '',
+          coverImage: project.coverImage || '',
+          featured: project.featured || false,
+          description: project.description || '',
+          order: project.order || 999
+        });
+        
+        console.log(`  ✓ ${project.title || file}`);
+      } catch (err) {
+        console.error(`  ✗ Error parseando ${file}:`, err.message);
+      }
     }
+
+    // Ordenar por 'order'
+    projects.sort((a, b) => a.order - b.order);
+
+    // Crear el objeto del índice
+    const indexData = {
+      projects: projects
+    };
+
+    // Escribir el archivo
+    await writeFile(INDEX_FILE, JSON.stringify(indexData, null, 2), 'utf8');
+    
+    console.log(`✅ Index generado con ${projects.length} proyectos en ${INDEX_FILE}`);
+    
+  } catch (error) {
+    console.error('❌ Error generando index:', error);
+    process.exit(1);
+  }
 }
 
-build();
+buildProjectsIndex();
