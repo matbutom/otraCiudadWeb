@@ -1,0 +1,13 @@
+{
+  "coverImage": "assets/images/07.Otra Ciudad_New York.jpg",
+  "slug": "chromatic-rings",
+  "client": "Prueba",
+  "order": 1,
+  "location": "Brooklyn, New York",
+  "title": "Chromatic Rings",
+  "images": [
+    "assets/images/07.Otra Ciudad_New York.jpg"
+  ],
+  "description": "Texto prueba",
+  "year": "2018"
+}
