@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title id="pageTitle">Proyecto - Otra Ciudad</title>
+    <link rel="stylesheet" href="https://use.typekit.net/zhl8vxt.css">
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-project">
+    <header class="topbar">
+        <div class="topbar__inner">
+            <a class="brand" href="index.html" aria-label="Ir al inicio">
+                <picture>
+                    <source media="(min-width: 521px)" srcset="assets/uploads/otraCiudad_03.png" />
+                    <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
+                </picture>
+            </a>
+
+            <nav class="topnav" aria-label="Navegación principal">
+                <a href="about.html">About us</a>
+                <a href="projects.html">Projects</a>
+                <a href="contact.html">Contact us</a>
+            </nav>
+
+            <button class="menuBtn" type="button" aria-label="Abrir menú" aria-expanded="false">
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="project">
+        <div class="project__container">
+            <!-- Columna izquierda: título + contenido -->
+            <div class="project__left">
+                <h1 class="project__title" id="projectTitle">Chromatic Rings</h1>
+
+                <!-- Contenido del proyecto -->
+                <div class="project__content" id="projectContent">
+                    <p>It seeks to integrate barrier to a new experience of public space trough a strategy of shape and color along the Street. The proposal is inspired by de movement of cyclists, abstracting the movement of the wheels in the city through a set of chromatic rings.</p>
+                    
+                    <p>The design strategy is to build a single diameter pattern in which it varies in distance and color producing a uniform movement of public space, easy to apply with volunteers and feasible for the uneven Surface.</p>
+                    
+                    <p>The chromatic proposal belongs to a set of vibrant colors, striking and stimulating to perception, building a blue background in which the contrast of the chromatic rings can be notified.</p>
+                </div>
+
+                <!-- Metadatos -->
+                <div class="project__meta">
+                    <div class="project__metaItem">
+                        <h3 class="project__metaLabel">Date:</h3>
+                        <p class="project__metaValue" id="projectDate">2018</p>
+                    </div>
+
+                    <div class="project__metaItem">
+                        <h3 class="project__metaLabel">Client:</h3>
+                        <p class="project__metaValue" id="projectClient">Department of Transport, New York, DOT-ART</p>
+                    </div>
+
+                    <div class="project__metaItem">
+                        <h3 class="project__metaLabel">Location:</h3>
+                        <p class="project__metaValue" id="projectLocation">Brooklyn, New York</p>
+                    </div>
+
+                    <div class="project__metaItem">
+                        <h3 class="project__metaLabel">Partners:</h3>
+                        <div class="project__metaValue" id="projectPartners">
+                            <p>Cristina Nuñez</p>
+                            <p>Nicolás Orellana</p>
+                            <p>Simón de Madera</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha: galería de imágenes -->
+            <div class="project__gallery" id="projectGallery">
+                <img class="project__img" src="assets/images/07.Otra Ciudad_New York.jpg" alt="Chromatic Rings - Vista 1" />
+                <img class="project__img" src="assets/images/07.Otra Ciudad_New York.jpg" alt="Chromatic Rings - Vista 2" />
+                <img class="project__img" src="assets/images/07.Otra Ciudad_New York.jpg" alt="Chromatic Rings - Vista 3" />
+            </div>
+        </div>
+    </main>
+
+    <!-- Script del menú hamburguesa -->
+    <script>
+        (function () {
+            const btn = document.querySelector(".menuBtn");
+            const nav = document.querySelector(".topnav");
+            if (!btn || !nav) return;
+
+            function closeMenu() {
+                document.body.classList.remove("menu-open");
+                btn.setAttribute("aria-expanded", "false");
+            }
+
+            btn.addEventListener("click", () => {
+                const open = !document.body.classList.contains("menu-open");
+                document.body.classList.toggle("menu-open", open);
+                btn.setAttribute("aria-expanded", String(open));
+            });
+
+            nav.addEventListener("click", (e) => {
+                if (e.target && e.target.tagName === "A") closeMenu();
+            });
+
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeMenu();
+            });
+        })();
+    </script>
+
+    <!-- Script para cargar el proyecto desde JSON -->
+    <script>
+        (function () {
+            // Obtener el slug del proyecto desde la URL (?project=chromatic-rings)
+            const params = new URLSearchParams(window.location.search);
+            const projectSlug = params.get('project');
+
+            if (!projectSlug) {
+                console.warn('No se especificó un proyecto');
+                return;
+            }
+
+            // Calcular basePath para GitHub Pages
+            const basePath = window.location.pathname.includes('/otraCiudadWeb/') 
+                ? '/otraCiudadWeb' 
+                : '';
+
+            // Cargar el JSON del proyecto
+            fetch(`${basePath}/content/projects/${projectSlug}.json`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Proyecto no encontrado');
+                    return res.json();
+                })
+                .then(data => {
+                    // Actualizar título de la página
+                    document.getElementById('pageTitle').textContent = `${data.title} - Otra Ciudad`;
+                    
+                    // Actualizar título del proyecto
+                    document.getElementById('projectTitle').textContent = data.title;
+
+                    // Actualizar contenido (descripción en párrafos)
+                    if (data.description) {
+                        const contentDiv = document.getElementById('projectContent');
+                        contentDiv.innerHTML = data.description
+                            .split('\n\n')
+                            .map(p => `<p>${p}</p>`)
+                            .join('');
+                    }
+
+                    // Actualizar metadatos
+                    if (data.year) {
+                        document.getElementById('projectDate').textContent = data.year;
+                    }
+                    if (data.client) {
+                        document.getElementById('projectClient').textContent = data.client;
+                    }
+                    if (data.location) {
+                        document.getElementById('projectLocation').textContent = data.location;
+                    }
+                    if (data.partners && data.partners.length > 0) {
+                        const partnersDiv = document.getElementById('projectPartners');
+                        partnersDiv.innerHTML = data.partners
+                            .map(p => `<p>${p}</p>`)
+                            .join('');
+                    }
+
+                    // Actualizar galería de imágenes
+                    if (data.images && data.images.length > 0) {
+                        const gallery = document.getElementById('projectGallery');
+                        gallery.innerHTML = data.images
+                            .map(img => `<img class="project__img" src="${basePath}/${img}" alt="${data.title}" />`)
+                            .join('');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error cargando proyecto:', err);
+                    document.getElementById('projectTitle').textContent = 'Proyecto no encontrado';
+                });
+        })();
+    </script>
+
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

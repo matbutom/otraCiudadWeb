@@ -1,0 +1,83 @@
+backend:
+  name: git-gateway
+  branch: main # o 'master' si tu rama principal se llama así
+
+# Configuración de medios
+media_folder: "assets/images" # Carpeta donde se guardarán las imágenes
+public_folder: "assets/images" # Ruta pública para acceder a las imágenes
+
+# Idioma del admin
+locale: 'es'
+
+# Colecciones (tipos de contenido)
+collections:
+  # CONFIGURACIÓN DEL SITIO (textos generales)
+  - name: "settings"
+    label: "Configuración del Sitio"
+    files:
+      - name: "site"
+        label: "Información General"
+        file: "content/site.json"
+        fields:
+          - { label: "Nombre del Sitio", name: "siteName", widget: "string", default: "Otra Ciudad" }
+          - { label: "Texto Hero/Intro", name: "heroText", widget: "text", hint: "Texto que aparece en la banda celeste del home" }
+          - { label: "Email de Contacto", name: "email", widget: "string", required: false }
+          - { label: "Instagram", name: "instagram", widget: "string", required: false }
+          - { label: "About Us (Descripción)", name: "aboutText", widget: "markdown", required: false }
+
+  # IMÁGENES DEL HERO/CARRUSEL
+  - name: "hero"
+    label: "Carrusel Hero (Portada)"
+    files:
+      - name: "hero-images"
+        label: "Imágenes del Carrusel"
+        file: "content/hero-images.json"
+        fields:
+          - label: "Imágenes"
+            name: "images"
+            widget: "list"
+            summary: "{{fields.image}}"
+            field: 
+              label: "Imagen"
+              name: "image"
+              widget: "image"
+              media_folder: "/assets/images"
+              public_folder: "assets/images"
+
+  # PROYECTOS (lo más importante)
+  - name: "projects"
+    label: "Proyectos"
+    label_singular: "Proyecto"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    extension: "json"
+    format: "json"
+    editor:
+      preview: false
+    fields:
+      - { label: "Slug (URL)", name: "slug", widget: "string", hint: "Se genera automáticamente del título, ej: chromatic-rings" }
+      - { label: "Título", name: "title", widget: "string" }
+      - { label: "Ubicación", name: "location", widget: "string", hint: "Ej: Brooklyn, New York" }
+      - { label: "Año", name: "year", widget: "string", hint: "Ej: 2018" }
+      - { label: "Cliente", name: "client", widget: "string", required: false }
+      - { label: "Descripción/Brief", name: "description", widget: "markdown", hint: "Usa párrafos separados con Enter. Soporta markdown." }
+      - label: "Partners/Colaboradores"
+        name: "partners"
+        widget: "list"
+        required: false
+        summary: "{{fields.partner}}"
+        field:
+          label: "Nombre del Partner"
+          name: "partner"
+          widget: "string"
+      - { label: "Imagen de Portada", name: "coverImage", widget: "image", hint: "Imagen principal que aparece en el listado" }
+      - label: "Galería de Imágenes"
+        name: "images"
+        widget: "list"
+        summary: "{{fields.image}}"
+        field:
+          label: "Imagen"
+          name: "image"
+          widget: "image"
+      - { label: "Orden", name: "order", widget: "number", default: 1, value_type: "int", min: 1, hint: "Orden en el listado (menor número = más arriba)" }

@@ -1,0 +1,36 @@
+{
+  "projects": [
+    {
+      "slug": "chromatic-rings",
+      "title": "Chromatic Rings",
+      "location": "Brooklyn, New York",
+      "year": "2018",
+      "coverImage": "assets/images/07.Otra Ciudad_New York.jpg",
+      "order": 1
+    },
+    {
+      "slug": "barrios-caminables",
+      "title": "Barrios Caminables",
+      "location": "Santiago, Chile",
+      "year": "2019",
+      "coverImage": "assets/images/04.Otra Ciudad_Santiago.jpg",
+      "order": 2
+    },
+    {
+      "slug": "azotea-torre-12",
+      "title": "Azotea Torre 12",
+      "location": "Santiago, Chile",
+      "year": "2020",
+      "coverImage": "assets/images/05.Otra Ciudad_Tlaxcala.jpg",
+      "order": 3
+    },
+    {
+      "slug": "multicancha-color",
+      "title": "Multicancha Color",
+      "location": "Ciudad de México, México",
+      "year": "2021",
+      "coverImage": "assets/images/06.Otra Ciudad_Boston.jpg",
+      "order": 4
+    }
+  ]
+}

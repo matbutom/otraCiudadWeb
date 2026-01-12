@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Projects - Otra Ciudad</title>
+    <link rel="stylesheet" href="https://use.typekit.net/zhl8vxt.css">
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-projects">
+    <header class="topbar">
+        <div class="topbar__inner">
+            <a class="brand" href="index.html" aria-label="Ir al inicio">
+                <picture>
+                    <source media="(min-width: 521px)" srcset="assets/uploads/otraCiudad_03.png" />
+                    <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
+                </picture>
+            </a>
+
+            <nav class="topnav" aria-label="Navegación principal">
+                <a href="about.html">About us</a>
+                <a href="projects.html">Projects</a>
+                <a href="contact.html">Contact us</a>
+            </nav>
+
+            <button class="menuBtn" type="button" aria-label="Abrir menú" aria-expanded="false">
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="projects">
+        <div class="projects__container">
+            <!-- Lista de proyectos se carga dinámicamente -->
+            <div id="projectsList" class="projects__list">
+                <!-- Proyectos de ejemplo (se reemplazarán con JS) -->
+                <a href="project.html?project=chromatic-rings" class="projectCard">
+                    <div class="projectCard__imgWrap">
+                        <img class="projectCard__img" src="assets/images/07.Otra Ciudad_New York.jpg" alt="Chromatic Rings" />
+                    </div>
+                    <h2 class="projectCard__title">Chromatic Rings</h2>
+                    <div class="projectCard__meta">
+                        <span class="projectCard__label">Location:</span>
+                        <span class="projectCard__location">Brooklyn, New York</span>
+                    </div>
+                    <div class="projectCard__meta">
+                        <span class="projectCard__label">Year</span>
+                        <span class="projectCard__year">2018</span>
+                    </div>
+                </a>
+
+                <a href="project.html?project=barrios-caminables" class="projectCard">
+                    <div class="projectCard__imgWrap">
+                        <img class="projectCard__img" src="assets/images/04.Otra Ciudad_Santiago.jpg" alt="Barrios Caminables" />
+                    </div>
+                    <h2 class="projectCard__title">Barrios Caminables</h2>
+                    <div class="projectCard__meta">
+                        <span class="projectCard__label">Location:</span>
+                        <span class="projectCard__location">Santiago, Chile</span>
+                    </div>
+                    <div class="projectCard__meta">
+                        <span class="projectCard__label">Year</span>
+                        <span class="projectCard__year">2019</span>
+                    </div>
+                </a>
+
+                <a href="project.html?project=azotea-torre-12" class="projectCard">
+                    <div class="projectCard__imgWrap">
+                        <img class="projectCard__img" src="assets/images/05.Otra Ciudad_Tlaxcala.jpg" alt="Azotea Torre 12" />
+                    </div>
+                    <h2 class="projectCard__title">Azotea Torre 12</h2>
+                    <div class="projectCard__meta">
+                        <span class="projectCard__label">Location:</span>
+                        <span class="projectCard__location">Santiago, Chile</span>
+                    </div>
+                    <div class="projectCard__meta">
+                        <span class="projectCard__label">Year</span>
+                        <span class="projectCard__year">2020</span>
+                    </div>
+                </a>
+
+                <a href="project.html?project=multicancha-color" class="projectCard">
+                    <div class="projectCard__imgWrap">
+                        <img class="projectCard__img" src="assets/images/06.Otra Ciudad_Boston.jpg" alt="Multicancha Color" />
+                    </div>
+                    <h2 class="projectCard__title">Multicancha Color</h2>
+                    <div class="projectCard__meta">
+                        <span class="projectCard__label">Location:</span>
+                        <span class="projectCard__location">Ciudad de México, México</span>
+                    </div>
+                    <div class="projectCard__meta">
+                        <span class="projectCard__label">Year</span>
+                        <span class="projectCard__year">2021</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script del menú hamburguesa -->
+    <script>
+        (function () {
+            const btn = document.querySelector(".menuBtn");
+            const nav = document.querySelector(".topnav");
+            if (!btn || !nav) return;
+
+            function closeMenu() {
+                document.body.classList.remove("menu-open");
+                btn.setAttribute("aria-expanded", "false");
+            }
+
+            btn.addEventListener("click", () => {
+                const open = !document.body.classList.contains("menu-open");
+                document.body.classList.toggle("menu-open", open);
+                btn.setAttribute("aria-expanded", String(open));
+            });
+
+            nav.addEventListener("click", (e) => {
+                if (e.target && e.target.tagName === "A") closeMenu();
+            });
+
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeMenu();
+            });
+        })();
+    </script>
+
+    <!-- Script para cargar proyectos dinámicamente desde JSON -->
+    <script>
+        (function () {
+            // Calcular basePath para GitHub Pages
+            const basePath = window.location.pathname.includes('/otraCiudadWeb/') 
+                ? '/otraCiudadWeb' 
+                : '';
+
+            // Cargar el índice de proyectos
+            fetch(`${basePath}/content/projects-index.json`)
+                .then(res => {
+                    if (!res.ok) throw new Error('No se pudo cargar el índice de proyectos');
+                    return res.json();
+                })
+                .then(data => {
+                    const projectsList = document.getElementById('projectsList');
+                    
+                    // Ordenar proyectos por 'order' si existe
+                    const projects = data.projects || data;
+                    const sortedProjects = projects.sort((a, b) => (a.order || 0) - (b.order || 0));
+
+                    // Generar HTML para cada proyecto
+                    projectsList.innerHTML = sortedProjects.map(project => `
+                        <a href="project.html?project=${project.slug}" class="projectCard">
+                            <div class="projectCard__imgWrap">
+                                <img class="projectCard__img" 
+                                     src="${basePath}/${project.coverImage}" 
+                                     alt="${project.title}" />
+                            </div>
+                            <h2 class="projectCard__title">${project.title}</h2>
+                            <div class="projectCard__meta">
+                                <span class="projectCard__label">Location:</span>
+                                <span class="projectCard__location">${project.location || ''}</span>
+                            </div>
+                            <div class="projectCard__meta">
+                                <span class="projectCard__label">Year</span>
+                                <span class="projectCard__year">${project.year || ''}</span>
+                            </div>
+                        </a>
+                    `).join('');
+                })
+                .catch(err => {
+                    console.error('Error cargando proyectos:', err);
+                    document.getElementById('projectsList').innerHTML = 
+                        '<p style="padding: 40px; text-align: center;">No se pudieron cargar los proyectos.</p>';
+                });
+        })();
+    </script>
+
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
