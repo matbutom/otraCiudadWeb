@@ -1,0 +1,11 @@
+{
+  "coverImage": "assets/images/07.Otra Ciudad_New York.jpg",
+  "slug": "proyecto-de-prueba",
+  "client": "Rafita TV",
+  "featured": true,
+  "order": 1,
+  "location": "Chile",
+  "title": "Proyecto de Prueba",
+  "description": "Descripcion prueba",
+  "year": "2025"
+}
