@@ -3,6 +3,7 @@ import { join } from 'path';
 
 const PROJECTS_DIR = './content/projects';
 const INDEX_FILE = './content/projects-index.json';
+const REDIRECTS_FILE = './_redirects';
 
 async function buildProjectsIndex() {
   try {
@@ -17,6 +18,7 @@ async function buildProjectsIndex() {
     console.log(`📄 Encontrados ${jsonFiles.length} proyectos`);
 
     const projects = [];
+    const redirects = [];
 
     // Leer cada archivo JSON
     for (const file of jsonFiles) {
@@ -37,6 +39,11 @@ async function buildProjectsIndex() {
           description: project.description || '',
           order: project.order || 999
         });
+
+        // Generar regla de redirect para URL limpia
+        const slug = project.slug || file.replace('.json', '');
+        redirects.push(`/projects/${slug} /project.html?project=${slug} 200`);
+        redirects.push(`/projects/${slug}/ /project.html?project=${slug} 200`);
         
         console.log(`  ✓ ${project.title || file}`);
       } catch (err) {
@@ -52,10 +59,16 @@ async function buildProjectsIndex() {
       projects: projects
     };
 
-    // Escribir el archivo
+    // Escribir el archivo de índice
     await writeFile(INDEX_FILE, JSON.stringify(indexData, null, 2), 'utf8');
     
     console.log(`✅ Index generado con ${projects.length} proyectos en ${INDEX_FILE}`);
+
+    // Escribir archivo de redirects
+    if (redirects.length > 0) {
+      await writeFile(REDIRECTS_FILE, redirects.join('\n') + '\n', 'utf8');
+      console.log(`✅ Redirects generados: ${redirects.length} reglas en ${REDIRECTS_FILE}`);
+    }
     
   } catch (error) {
     console.error('❌ Error generando index:', error);

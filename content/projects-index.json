@@ -1,3 +1,14 @@
 {
-  "projects": []
+  "projects": [
+    {
+      "slug": "proyecto-prueba01",
+      "title": "Proyecto prueba ",
+      "location": "chile",
+      "year": "2020",
+      "coverImage": "assets/images/03.Otra Ciudad_Ciudad de México.jpg",
+      "featured": false,
+      "description": "prueba descripcion",
+      "order": 1
+    }
+  ]
 }
