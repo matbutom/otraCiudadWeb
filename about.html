@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>About Us - Otra Ciudad</title>
+    <link rel="stylesheet" href="https://use.typekit.net/zhl8vxt.css">
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-about">
+    <header class="topbar">
+        <div class="topbar__inner">
+            <a class="brand" href="index.html" aria-label="Ir al inicio">
+                <picture>
+                    <source media="(min-width: 521px)" srcset="assets/uploads/otraCiudad_03.png" />
+                    <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
+                </picture>
+            </a>
+
+            <nav class="topnav" aria-label="Navegación principal">
+                <a href="about.html">About us</a>
+                <a href="projects.html">Projects</a>
+                <a href="contact.html">Contact us</a>
+            </nav>
+
+            <button class="menuBtn" type="button" aria-label="Abrir menú" aria-expanded="false">
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+                <span class="menuBtn__bar" aria-hidden="true"></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="about">
+        <div class="about__container">
+            <h1 class="about__title">About Us</h1>
+            
+            <div class="about__content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Script del menú hamburguesa -->
+    <script>
+        (function () {
+            const btn = document.querySelector(".menuBtn");
+            const nav = document.querySelector(".topnav");
+            if (!btn || !nav) return;
+
+            function closeMenu() {
+                document.body.classList.remove("menu-open");
+                btn.setAttribute("aria-expanded", "false");
+            }
+
+            btn.addEventListener("click", () => {
+                const open = !document.body.classList.contains("menu-open");
+                document.body.classList.toggle("menu-open", open);
+                btn.setAttribute("aria-expanded", String(open));
+            });
+
+            nav.addEventListener("click", (e) => {
+                if (e.target && e.target.tagName === "A") closeMenu();
+            });
+
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeMenu();
+            });
+        })();
+    </script>
+
+    <!-- Netlify Identity Widget -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
