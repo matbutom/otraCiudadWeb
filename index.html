@@ -61,10 +61,11 @@
             </div>
         </section>
 
-        <!-- PROYECTOS (texto + imagen alineados 1:1) -->
+        <!-- PROYECTOS DESTACADOS (autogenerados desde content/projects-index.json) -->
         <section class="homeProjects" aria-label="Proyectos destacados">
-            <div class="homeProjects__inner">
+            <div class="homeProjects__inner" id="homeFeatured">
 
+                <!-- fallback (si no carga el json por alguna razón) -->
                 <div class="homeRow">
                     <article class="projItem">
                         <p class="projItem__desc">
@@ -136,13 +137,14 @@
                         <img class="stackImg" src="assets/images/06.Otra Ciudad_Boston.jpg" alt="" />
                     </div>
                 </div>
+
             </div>
         </section>
 
     </main>
 
     <script src="js/hero-carousel.js"></script>
-    
+
     <script>
         (function () {
             const btn = document.querySelector(".menuBtn");
@@ -172,14 +174,102 @@
         })();
     </script>
 
+<script>
+  (function () {
+    const mount = document.getElementById("homeFeatured");
+    if (!mount) return;
+
+    // basePath robusto (GitHub Pages /otraCiudadWeb/ y local/Netlify)
+    const basePath = window.location.pathname.replace(/\/[^\/]*$/, "/");
+
+    function esc(s) {
+      return String(s ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function normalizePath(p) {
+      return String(p ?? "").trim().replace(/^\//, "");
+    }
+
+    function nl2br(s) {
+      return esc(s).replace(/\n/g, "<br />");
+    }
+
+    fetch(basePath + "content/projects-index.json", { cache: "no-store" })
+      .then((r) => {
+        if (!r.ok) throw new Error("No se pudo cargar projects-index.json");
+        return r.json();
+      })
+      .then((data) => {
+        const projects = Array.isArray(data?.projects) ? data.projects : [];
+        if (!projects.length) return;
+
+        // orden por "order"
+        const sorted = [...projects].sort(
+          (a, b) => (Number(a?.order) || 9999) - (Number(b?.order) || 9999)
+        );
+
+        // si existe featured lo usa, si no, toma primeros 4
+        const featured = sorted.filter((p) => Boolean(p?.featured)).slice(0, 4);
+        const list = featured.length ? featured : sorted.slice(0, 4);
+
+        if (!list.length) return;
+
+        mount.innerHTML = list
+          .map((p) => {
+            const slug = p?.slug || "";
+            const title = esc(p?.title || "");
+            const location = esc(p?.location || "");
+            const descHtml = nl2br(p?.description || "");
+            const cover = normalizePath(p?.coverImage || "");
+            const imgSrc = cover ? (basePath + cover) : "";
+            const link = "project.html?slug=" + encodeURIComponent(slug);
+
+            return `
+              <div class="homeRow">
+                <article class="projItem">
+                  <p class="projItem__desc">${descHtml}</p>
+
+                  <div class="projItem__row">
+                    <h2 class="projItem__title">
+                      <a href="${link}" aria-label="Ver proyecto ${esc(slug)}">${title}</a>
+                    </h2>
+                    <p class="projItem__place">${location}</p>
+                  </div>
+                </article>
+
+                <div class="imgMask">
+                  ${
+                    imgSrc
+                      ? `<a href="${link}" aria-label="Ver proyecto ${esc(slug)}">
+                           <img class="stackImg" src="${imgSrc}" alt="${esc(p?.title || "")}" />
+                         </a>`
+                      : ""
+                  }
+                </div>
+              </div>
+            `;
+          })
+          .join("");
+      })
+      .catch((e) => console.error(e));
+  })();
+</script>
+
     <!-- Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
         if (window.netlifyIdentity) {
+            const basePath = window.location.pathname.replace(/\/[^\/]*$/, "/");
+
             window.netlifyIdentity.on("init", user => {
                 if (!user) {
                     window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
+                        document.location.href = basePath + "admin/";
                     });
                 }
             });
