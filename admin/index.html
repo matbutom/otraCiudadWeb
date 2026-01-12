@@ -4,13 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin - Otra Ciudad</title>
-  <!-- Netlify CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <!-- Netlify Identity Widget (para autenticación) -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
-  <!-- El CMS se renderiza aquí automáticamente -->
+  <!-- Este div es donde se renderiza el CMS -->
+  <div id="nc-root"></div>
+  
+  <!-- Netlify Identity Widget (para autenticación) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  
+  <!-- Decap CMS (antes Netlify CMS) -->
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
   
   <script>
     // Redirigir después del login
