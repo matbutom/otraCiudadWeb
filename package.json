@@ -1,0 +1,7 @@
+{
+  "name": "otra-ciudad-web",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node build-index.js"
+  }
+}

@@ -1,3 +1,6 @@
 [build]
-  command = "node scripts/build-projects-index.mjs"
-  publish = "."
+  command = "npm run build"
+  publish = "." # O la carpeta donde esté tu index.html (ej: "public" o "dist" si usas un bundler)
+
+[build.environment]
+  NODE_VERSION = "20"

@@ -35,14 +35,11 @@
 
     <main class="projects">
         <div class="projects__container">
-            <!-- Lista de proyectos se carga dinámicamente -->
             <div id="projectsList" class="projects__list">
-                <!-- Los proyectos se cargarán aquí automáticamente desde el CMS -->
-            </div>
+                </div>
         </div>
     </main>
 
-    <!-- Script del menú hamburguesa -->
     <script>
         (function () {
             const btn = document.querySelector(".menuBtn");
@@ -70,31 +67,26 @@
         })();
     </script>
 
-    <!-- Script para cargar proyectos dinámicamente desde JSON -->
     <script>
         (function () {
-            // Calcular basePath para GitHub Pages
             const basePath = window.location.pathname.includes('/otraCiudadWeb/') 
                 ? '/otraCiudadWeb' 
                 : '';
 
             const projectsList = document.getElementById('projectsList');
-            
-            // Mostrar mensaje de carga
             projectsList.innerHTML = '<p style="padding: 40px; text-align: center; color: #999;">Cargando proyectos...</p>';
 
-            // Cargar el índice de proyectos
+            // Llamamos al índice generado por el script de build
             fetch(`${basePath}/content/projects-index.json`)
                 .then(res => {
-                    if (!res.ok) throw new Error('No se pudo cargar el índice de proyectos');
+                    if (!res.ok) throw new Error('Índice no encontrado');
                     return res.json();
                 })
                 .then(data => {
-                    // Ordenar proyectos por 'order' si existe
-                    const projects = data.projects || data;
+                    // Accedemos a la propiedad .projects del JSON
+                    const projects = data.projects || [];
                     
-                    // Si no hay proyectos, mostrar mensaje amigable
-                    if (!projects || projects.length === 0) {
+                    if (projects.length === 0) {
                         projectsList.innerHTML = `
                             <div style="padding: 80px 20px; text-align: center;">
                                 <h2 style="font-family: var(--font-title); font-size: 48px; margin: 0 0 20px; font-weight: 800; line-height: 1;">No hay proyectos aún</h2>
@@ -104,10 +96,8 @@
                         return;
                     }
 
-                    const sortedProjects = projects.sort((a, b) => (a.order || 0) - (b.order || 0));
-
-                    // Generar HTML para cada proyecto
-                    projectsList.innerHTML = sortedProjects.map(project => `
+                    // Renderizado de tarjetas
+                    projectsList.innerHTML = projects.map(project => `
                         <a href="project.html?project=${project.slug}" class="projectCard">
                             <div class="projectCard__imgWrap">
                                 <img class="projectCard__img" 
@@ -120,37 +110,24 @@
                                 <span class="projectCard__location">${project.location || ''}</span>
                             </div>
                             <div class="projectCard__meta">
-                                <span class="projectCard__label">Year</span>
+                                <span class="projectCard__label">Year:</span>
                                 <span class="projectCard__year">${project.year || ''}</span>
                             </div>
                         </a>
                     `).join('');
                 })
                 .catch(err => {
-                    console.error('Error cargando proyectos:', err);
+                    console.error('Error:', err);
                     projectsList.innerHTML = `
                         <div style="padding: 80px 20px; text-align: center;">
-                            <h2 style="font-family: var(--font-title); font-size: 48px; margin: 0 0 20px; font-weight: 800; line-height: 1;">No hay proyectos aún</h2>
-                            <p style="font-size: 18px; color: #666; margin: 0;">Crea tu primer proyecto desde el <a href="/admin" style="text-decoration: underline;">CMS</a>.</p>
+                            <h2 style="font-family: var(--font-title); font-size: 32px; margin: 0 0 20px; font-weight: 800;">Configurando el índice...</h2>
+                            <p style="font-size: 18px; color: #666;">Si acabas de subir cambios, espera a que Netlify termine el despliegue.</p>
                         </div>
                     `;
                 });
         })();
     </script>
 
-    <!-- Netlify Identity Widget -->
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script>
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
-    </script>
 </body>
-
 </html>
