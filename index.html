@@ -14,9 +14,7 @@
         <div class="topbar__inner">
             <a class="brand" href="index.html" aria-label="Ir al inicio">
                 <picture>
-                    <!-- desktop (desde 521px hacia arriba) -->
                     <source media="(min-width: 521px)" srcset="assets/uploads/otraCiudad_03.png" />
-                    <!-- mobile (hasta 520px) -->
                     <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
                 </picture>
             </a>
@@ -32,115 +30,30 @@
                 <span class="menuBtn__bar" aria-hidden="true"></span>
                 <span class="menuBtn__bar" aria-hidden="true"></span>
             </button>
-
         </div>
     </header>
 
     <main class="home">
-        <!-- HERO (carrusel existente) -->
         <section class="hero" aria-label="Carrusel de imágenes">
             <div class="heroSlider" id="heroSlider">
                 <img class="heroSlide is-active" alt="" />
                 <img class="heroSlide" alt="" />
             </div>
-
-            <noscript>
-                <img class="hero__img" src="assets/images/otraCiudad_01.png" alt="" />
-            </noscript>
         </section>
 
-        <!-- BLOQUE CELESTE CON TEXTO GRANDE -->
         <section class="band" aria-label="Texto introductorio">
             <div class="band__inner">
-                <p class="band__text">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                    ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat.
+                <p class="band__text" id="siteIntro">
+                    Cargando información...
                 </p>
             </div>
         </section>
 
-        <!-- PROYECTOS DESTACADOS (autogenerados desde content/projects-index.json) -->
         <section class="homeProjects" aria-label="Proyectos destacados">
             <div class="homeProjects__inner" id="homeFeatured">
-
-                <!-- fallback (si no carga el json por alguna razón) -->
-                <div class="homeRow">
-                    <article class="projItem">
-                        <p class="projItem__desc">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                            eiusmod tempor incididunt ut labore.
-                        </p>
-
-                        <div class="projItem__row">
-                            <h2 class="projItem__title">Chromatic<br />Rings</h2>
-                            <p class="projItem__place">Brooklyn, New York</p>
-                        </div>
-                    </article>
-
-                    <div class="imgMask">
-                        <img class="stackImg" src="assets/images/07.Otra Ciudad_New York.jpg" alt="" />
-                    </div>
-                </div>
-
-                <div class="homeRow">
-                    <article class="projItem">
-                        <p class="projItem__desc">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                            eiusmod tempor incididunt ut labore.
-                        </p>
-
-                        <div class="projItem__row">
-                            <h2 class="projItem__title">Barrios<br />Caminables</h2>
-                            <p class="projItem__place">Santiago, Chile</p>
-                        </div>
-                    </article>
-
-                    <div class="imgMask">
-                        <img class="stackImg" src="assets/images/04.Otra Ciudad_Santiago.jpg" alt="" />
-                    </div>
-                </div>
-
-                <div class="homeRow">
-                    <article class="projItem">
-                        <p class="projItem__desc">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                            eiusmod tempor incididunt ut labore.
-                        </p>
-
-                        <div class="projItem__row">
-                            <h2 class="projItem__title">Azotea<br />Torre 12</h2>
-                            <p class="projItem__place">Santiago, Chile</p>
-                        </div>
-                    </article>
-
-                    <div class="imgMask">
-                        <img class="stackImg" src="assets/images/05.Otra Ciudad_Tlaxcala.jpg" alt="" />
-                    </div>
-                </div>
-
-                <div class="homeRow">
-                    <article class="projItem">
-                        <p class="projItem__desc">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                            eiusmod tempor incididunt ut labore.
-                        </p>
-
-                        <div class="projItem__row">
-                            <h2 class="projItem__title">Multicancha<br />Color</h2>
-                            <p class="projItem__place">Ciudad de México, México</p>
-                        </div>
-                    </article>
-
-                    <div class="imgMask">
-                        <img class="stackImg" src="assets/images/06.Otra Ciudad_Boston.jpg" alt="" />
-                    </div>
-                </div>
-
+                <p style="text-align: center; padding: 50px; opacity: 0.5;">Cargando proyectos destacados...</p>
             </div>
         </section>
-
     </main>
 
     <script src="js/hero-carousel.js"></script>
@@ -161,120 +74,67 @@
                 document.body.classList.toggle("menu-open", open);
                 btn.setAttribute("aria-expanded", String(open));
             });
-
-            // cerrar al tocar un link
-            nav.addEventListener("click", (e) => {
-                if (e.target && e.target.tagName === "A") closeMenu();
-            });
-
-            // cerrar con ESC
-            window.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") closeMenu();
-            });
         })();
     </script>
 
-<script>
-  (function () {
-    const mount = document.getElementById("homeFeatured");
-    if (!mount) return;
-
-    // basePath robusto (GitHub Pages /otraCiudadWeb/ y local/Netlify)
-    const basePath = window.location.pathname.replace(/\/[^\/]*$/, "/");
-
-    function esc(s) {
-      return String(s ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function normalizePath(p) {
-      return String(p ?? "").trim().replace(/^\//, "");
-    }
-
-    function nl2br(s) {
-      return esc(s).replace(/\n/g, "<br />");
-    }
-
-    fetch(basePath + "content/projects-index.json", { cache: "no-store" })
-      .then((r) => {
-        if (!r.ok) throw new Error("No se pudo cargar projects-index.json");
-        return r.json();
-      })
-      .then((data) => {
-        const projects = Array.isArray(data?.projects) ? data.projects : [];
-        if (!projects.length) return;
-
-        // orden por "order"
-        const sorted = [...projects].sort(
-          (a, b) => (Number(a?.order) || 9999) - (Number(b?.order) || 9999)
-        );
-
-        // si existe featured lo usa, si no, toma primeros 4
-        const featured = sorted.filter((p) => Boolean(p?.featured)).slice(0, 4);
-        const list = featured.length ? featured : sorted.slice(0, 4);
-
-        if (!list.length) return;
-
-        mount.innerHTML = list
-          .map((p) => {
-            const slug = p?.slug || "";
-            const title = esc(p?.title || "");
-            const location = esc(p?.location || "");
-            const descHtml = nl2br(p?.description || "");
-            const cover = normalizePath(p?.coverImage || "");
-            const imgSrc = cover ? (basePath + cover) : "";
-            const link = "project.html?slug=" + encodeURIComponent(slug);
-
-            return `
-              <div class="homeRow">
-                <article class="projItem">
-                  <p class="projItem__desc">${descHtml}</p>
-
-                  <div class="projItem__row">
-                    <h2 class="projItem__title">
-                      <a href="${link}" aria-label="Ver proyecto ${esc(slug)}">${title}</a>
-                    </h2>
-                    <p class="projItem__place">${location}</p>
-                  </div>
-                </article>
-
-                <div class="imgMask">
-                  ${
-                    imgSrc
-                      ? `<a href="${link}" aria-label="Ver proyecto ${esc(slug)}">
-                           <img class="stackImg" src="${imgSrc}" alt="${esc(p?.title || "")}" />
-                         </a>`
-                      : ""
-                  }
-                </div>
-              </div>
-            `;
-          })
-          .join("");
-      })
-      .catch((e) => console.error(e));
-  })();
-</script>
-
-    <!-- Netlify Identity Widget -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
-        if (window.netlifyIdentity) {
-            const basePath = window.location.pathname.replace(/\/[^\/]*$/, "/");
+        (function () {
+            const mount = document.getElementById("homeFeatured");
+            const introEl = document.getElementById("siteIntro");
+            
+            // Detectar si estamos en GitHub Pages o raíz
+            const basePath = window.location.pathname.includes('/otraCiudadWeb/') ? '/otraCiudadWeb/' : '/';
 
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = basePath + "admin/";
-                    });
-                }
-            });
-        }
+            // 1. Cargar Información General (Banda Celeste)
+            fetch(basePath + "content/site.json")
+                .then(r => r.json())
+                .then(data => {
+                    if (data.heroText) introEl.innerText = data.heroText;
+                })
+                .catch(e => console.error("Error cargando site settings:", e));
+
+            // 2. Cargar Proyectos Destacados
+            // Usamos featured-projects.json generado por el build step de Netlify
+            fetch(basePath + "content/featured-projects.json")
+                .then(r => r.json())
+                .then(data => {
+                    const projects = data.projects || [];
+                    
+                    if (!projects.length) {
+                        mount.innerHTML = "<p style='text-align:center;'>No hay proyectos destacados seleccionados.</p>";
+                        return;
+                    }
+
+                    mount.innerHTML = projects.map(p => {
+                        const link = `project.html?project=${p.slug}`;
+                        const imgSrc = p.coverImage.startsWith('http') ? p.coverImage : (basePath + p.coverImage);
+                        
+                        return `
+                        <div class="homeRow">
+                            <article class="projItem">
+                                <p class="projItem__desc">${p.description || ''}</p>
+                                <div class="projItem__row">
+                                    <h2 class="projItem__title">
+                                        <a href="${link}">${p.title}</a>
+                                    </h2>
+                                    <p class="projItem__place">${p.location || ''}</p>
+                                </div>
+                            </article>
+                            <div class="imgMask">
+                                <a href="${link}">
+                                    <img class="stackImg" src="${imgSrc}" alt="${p.title}" />
+                                </a>
+                            </div>
+                        </div>`;
+                    }).join('');
+                })
+                .catch(e => {
+                    console.error("Error cargando destacados:", e);
+                    mount.innerHTML = "<p style='text-align:center;'>Crea proyectos en el CMS y márcalos como destacados.</p>";
+                });
+        })();
     </script>
-</body>
 
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</body>
 </html>

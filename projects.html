@@ -60,10 +60,6 @@
             nav.addEventListener("click", (e) => {
                 if (e.target && e.target.tagName === "A") closeMenu();
             });
-
-            window.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") closeMenu();
-            });
         })();
     </script>
 
@@ -74,56 +70,57 @@
                 : '';
 
             const projectsList = document.getElementById('projectsList');
-            projectsList.innerHTML = '<p style="padding: 40px; text-align: center; color: #999;">Cargando proyectos...</p>';
+            projectsList.innerHTML = '<p style="padding: 40px; text-align: center; color: #999; opacity: 0.5;">Cargando proyectos...</p>';
 
-            // Llamamos al índice generado por el script de build
             fetch(`${basePath}/content/projects-index.json`)
                 .then(res => {
-                    if (!res.ok) throw new Error('Índice no encontrado');
+                    if (!res.ok) throw new Error('No se encontró el índice');
                     return res.json();
                 })
                 .then(data => {
-                    // Accedemos a la propiedad .projects del JSON
                     const projects = data.projects || [];
                     
                     if (projects.length === 0) {
                         projectsList.innerHTML = `
                             <div style="padding: 80px 20px; text-align: center;">
-                                <h2 style="font-family: var(--font-title); font-size: 48px; margin: 0 0 20px; font-weight: 800; line-height: 1;">No hay proyectos aún</h2>
-                                <p style="font-size: 18px; color: #666; margin: 0;">Los proyectos aparecerán aquí cuando los crees desde el CMS.</p>
+                                <h2 style="font-family: var(--font-title); font-size: 48px; font-weight: 800;">No hay proyectos</h2>
+                                <p style="color: #666;">Usa el CMS para crear tu primer proyecto.</p>
                             </div>
                         `;
                         return;
                     }
 
-                    // Renderizado de tarjetas
-                    projectsList.innerHTML = projects.map(project => `
-                        <a href="project.html?project=${project.slug}" class="projectCard">
+                    // Renderizado basado en tu style.css de 4 columnas
+                    projectsList.innerHTML = projects.map(project => {
+                        // Limpiamos la ruta de la imagen por si acaso
+                        const cleanImg = project.coverImage.replace(/^\//, '');
+                        
+                        return `
+                        <a href="proyectos/${project.slug}.html" class="projectCard">
                             <div class="projectCard__imgWrap">
                                 <img class="projectCard__img" 
-                                     src="${basePath}/${project.coverImage}" 
+                                     src="${basePath}/${cleanImg}" 
                                      alt="${project.title}" />
                             </div>
+                            
                             <h2 class="projectCard__title">${project.title}</h2>
+                            
                             <div class="projectCard__meta">
                                 <span class="projectCard__label">Location:</span>
                                 <span class="projectCard__location">${project.location || ''}</span>
                             </div>
+                            
                             <div class="projectCard__meta">
                                 <span class="projectCard__label">Year:</span>
                                 <span class="projectCard__year">${project.year || ''}</span>
                             </div>
                         </a>
-                    `).join('');
+                        `;
+                    }).join('');
                 })
                 .catch(err => {
                     console.error('Error:', err);
-                    projectsList.innerHTML = `
-                        <div style="padding: 80px 20px; text-align: center;">
-                            <h2 style="font-family: var(--font-title); font-size: 32px; margin: 0 0 20px; font-weight: 800;">Configurando el índice...</h2>
-                            <p style="font-size: 18px; color: #666;">Si acabas de subir cambios, espera a que Netlify termine el despliegue.</p>
-                        </div>
-                    `;
+                    projectsList.innerHTML = '<p style="text-align:center; padding: 50px;">Error al cargar la lista. Revisa que el build de Netlify haya terminado.</p>';
                 });
         })();
     </script>
