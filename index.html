@@ -12,17 +12,17 @@
 <body class="page-home">
     <header class="topbar">
         <div class="topbar__inner">
-            <a class="brand" href="index.html" aria-label="Ir al inicio">
+            <a class="brand" href="/" aria-label="Ir al inicio">
                 <picture>
-                    <source media="(min-width: 521px)" srcset="assets/uploads/otraCiudad_03.png" />
-                    <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
+                    <source media="(min-width: 521px)" srcset="/assets/uploads/otraCiudad_03.png" />
+                    <img class="brand__logo" src="/assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
                 </picture>
             </a>
 
             <nav class="topnav" aria-label="Navegación principal">
-                <a href="about.html">About us</a>
-                <a href="projects.html">Projects</a>
-                <a href="contact.html">Contact us</a>
+                <a href="/about.html">About us</a>
+                <a href="/projects.html">Projects</a>
+                <a href="/contact.html">Contact us</a>
             </nav>
 
             <button class="menuBtn" type="button" aria-label="Abrir menú" aria-expanded="false">
@@ -56,7 +56,7 @@
         </section>
     </main>
 
-    <script src="js/hero-carousel.js"></script>
+    <script src="/js/hero-carousel.js"></script>
 
     <script>
         (function () {
@@ -74,6 +74,17 @@
                 document.body.classList.toggle("menu-open", open);
                 btn.setAttribute("aria-expanded", String(open));
             });
+
+            // SOLO cerrar menú si el click es en un link del nav
+            nav.addEventListener("click", (e) => {
+                if (e.target && e.target.tagName === "A") {
+                    closeMenu();
+                }
+            });
+
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeMenu();
+            });
         })();
     </script>
 
@@ -81,33 +92,33 @@
         (function () {
             const mount = document.getElementById("homeFeatured");
             const introEl = document.getElementById("siteIntro");
-            
-            // Detectar si estamos en GitHub Pages o raíz
-            const basePath = window.location.pathname.includes('/otraCiudadWeb/') ? '/otraCiudadWeb/' : '/';
 
             // 1. Cargar Información General (Banda Celeste)
-            fetch(basePath + "content/site.json")
+            fetch("/content/site.json")
                 .then(r => r.json())
                 .then(data => {
                     if (data.heroText) introEl.innerText = data.heroText;
                 })
                 .catch(e => console.error("Error cargando site settings:", e));
 
-            // 2. Cargar Proyectos Destacados
-            // Usamos featured-projects.json generado por el build step de Netlify
-            fetch(basePath + "content/featured-projects.json")
+            // 2. Cargar Proyectos - CORREGIDO: usar projects-index.json
+            fetch("/content/projects-index.json")
                 .then(r => r.json())
                 .then(data => {
-                    const projects = data.projects || [];
+                    const allProjects = data.projects || [];
+                    
+                    // Filtrar solo los destacados, o si no hay, mostrar los primeros 4
+                    const featured = allProjects.filter(p => p.featured);
+                    const projects = featured.length > 0 ? featured.slice(0, 4) : allProjects.slice(0, 4);
                     
                     if (!projects.length) {
-                        mount.innerHTML = "<p style='text-align:center;'>No hay proyectos destacados seleccionados.</p>";
+                        mount.innerHTML = "<p style='text-align:center;'>No hay proyectos aún. Crea proyectos desde el CMS.</p>";
                         return;
                     }
 
                     mount.innerHTML = projects.map(p => {
-                        const link = `project.html?project=${p.slug}`;
-                        const imgSrc = p.coverImage.startsWith('http') ? p.coverImage : (basePath + p.coverImage);
+                        const link = `/projects/${p.slug}`;
+                        const imgSrc = p.coverImage.startsWith('http') ? p.coverImage : ('/' + p.coverImage);
                         
                         return `
                         <div class="homeRow">
@@ -129,12 +140,23 @@
                     }).join('');
                 })
                 .catch(e => {
-                    console.error("Error cargando destacados:", e);
-                    mount.innerHTML = "<p style='text-align:center;'>Crea proyectos en el CMS y márcalos como destacados.</p>";
+                    console.error("Error cargando proyectos:", e);
+                    mount.innerHTML = "<p style='text-align:center;'>Error cargando proyectos.</p>";
                 });
         })();
     </script>
 
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>
