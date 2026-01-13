@@ -60,8 +60,11 @@
                 btn.setAttribute("aria-expanded", String(open));
             });
 
+            // SOLO cerrar si el click es en un link DENTRO del nav
             nav.addEventListener("click", (e) => {
-                if (e.target && e.target.tagName === "A") closeMenu();
+                if (e.target && e.target.tagName === "A") {
+                    closeMenu();
+                }
             });
 
             window.addEventListener("keydown", (e) => {
@@ -149,4 +152,3 @@
 </body>
 
 </html>
-
