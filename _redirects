@@ -1,0 +1,10 @@
+# Redirects para proyectos
+# Este archivo será sobrescrito por el build script, pero sirve como base
+
+# Redirect general para todos los proyectos
+/projects/:slug /project.html?project=:slug 200
+
+# Redirects para páginas limpias
+/about /about.html 200
+/projects /projects.html 200
+/contact /contact.html 200

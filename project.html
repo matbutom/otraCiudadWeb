@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title id="pageTitle">Proyecto - Otra Ciudad</title>
     <link rel="stylesheet" href="https://use.typekit.net/zhl8vxt.css">
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body class="page-project">
     <header class="topbar">
         <div class="topbar__inner">
-            <a class="brand" href="index.html" aria-label="Ir al inicio">
+            <a class="brand" href="/" aria-label="Ir al inicio">
                 <picture>
-                    <source media="(min-width: 521px)" srcset="assets/uploads/otraCiudad_03.png" />
-                    <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
+                    <source media="(min-width: 521px)" srcset="/assets/uploads/otraCiudad_03.png" />
+                    <img class="brand__logo" src="/assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
                 </picture>
             </a>
 
             <nav class="topnav" aria-label="Navegación principal">
-                <a href="about.html">About us</a>
-                <a href="projects.html">Projects</a>
-                <a href="contact.html">Contact us</a>
+                <a href="/about.html">About us</a>
+                <a href="/projects.html">Projects</a>
+                <a href="/contact.html">Contact us</a>
             </nav>
 
             <button class="menuBtn" type="button" aria-label="Abrir menú" aria-expanded="false">
@@ -42,8 +42,7 @@
             <div class="project__left">
                 <h1 class="project__title" id="projectTitle"></h1>
 
-                <div class="project__content" id="projectContent">
-                    </div>
+                <div class="project__content" id="projectContent"></div>
 
                 <div class="project__meta">
                     <div class="project__metaItem" id="metaDateRow">
@@ -68,8 +67,7 @@
                 </div>
             </div>
 
-            <div class="project__gallery" id="projectGallery">
-                </div>
+            <div class="project__gallery" id="projectGallery"></div>
         </div>
     </main>
 
@@ -90,14 +88,13 @@
         (function () {
             const params = new URLSearchParams(window.location.search);
             const projectSlug = params.get('project');
-            const basePath = window.location.pathname.includes('/otraCiudadWeb/') ? '/otraCiudadWeb/' : '/';
 
             if (!projectSlug) {
-                window.location.href = 'projects.html';
+                window.location.href = '/projects.html';
                 return;
             }
 
-            fetch(`${basePath}content/projects/${projectSlug}.json`)
+            fetch(`/content/projects/${projectSlug}.json`)
                 .then(res => {
                     if (!res.ok) throw new Error('No encontrado');
                     return res.json();
@@ -130,7 +127,7 @@
                     setMeta('projectClient', 'metaClientRow', data.client);
                     setMeta('projectLocation', 'metaLocationRow', data.location);
 
-                    // 4. Partners (Decap guarda esto como lista de objetos [{partner: "nombre"}])
+                    // 4. Partners
                     const partnersDiv = document.getElementById('projectPartners');
                     if (data.partners && data.partners.length > 0) {
                         partnersDiv.innerHTML = data.partners
@@ -140,19 +137,18 @@
                         document.getElementById('metaPartnersRow').style.display = 'none';
                     }
 
-                    // 5. Galería (Decap guarda esto como lista de objetos [{image: "ruta"}])
+                    // 5. Galería
                     const gallery = document.getElementById('projectGallery');
                     if (data.images && data.images.length > 0) {
                         gallery.innerHTML = data.images
                             .map(item => {
                                 const imgPath = item.image || item;
-                                const fullSrc = imgPath.startsWith('http') ? imgPath : (basePath + imgPath);
+                                const fullSrc = imgPath.startsWith('http') ? imgPath : ('/' + imgPath);
                                 return `<img class="project__img" src="${fullSrc}" alt="${data.title}" />`;
                             })
                             .join('');
                     }
 
-                    // Mostrar contenido y quitar cargando
                     document.getElementById('projectLoading').style.display = 'none';
                     document.getElementById('projectMain').style.display = 'grid';
                 })
@@ -161,7 +157,7 @@
                     document.getElementById('projectLoading').innerHTML = `
                         <div style="padding: 100px; text-align: center;">
                             <h2>Proyecto no encontrado</h2>
-                            <p><a href="projects.html" style="text-decoration:underline">Volver a proyectos</a></p>
+                            <p><a href="/projects.html" style="text-decoration:underline">Volver a proyectos</a></p>
                         </div>
                     `;
                 });
