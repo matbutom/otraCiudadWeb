@@ -12,17 +12,17 @@
 <body class="page-projects">
     <header class="topbar">
         <div class="topbar__inner">
-            <a class="brand" href="index.html" aria-label="Ir al inicio">
+            <a class="brand" href="/" aria-label="Ir al inicio">
                 <picture>
-                    <source media="(min-width: 521px)" srcset="assets/uploads/otraCiudad_03.png" />
-                    <img class="brand__logo" src="assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
+                    <source media="(min-width: 521px)" srcset="/assets/uploads/otraCiudad_03.png" />
+                    <img class="brand__logo" src="/assets/uploads/otraCiudad_01.png" alt="Otra Ciudad" />
                 </picture>
             </a>
 
             <nav class="topnav" aria-label="Navegación principal">
-                <a href="about.html">About us</a>
-                <a href="projects.html">Projects</a>
-                <a href="contact.html">Contact us</a>
+                <a href="/about.html">About us</a>
+                <a href="/projects.html">Projects</a>
+                <a href="/contact.html">Contact us</a>
             </nav>
 
             <button class="menuBtn" type="button" aria-label="Abrir menú" aria-expanded="false">
@@ -73,18 +73,13 @@
     <!-- Script para cargar proyectos dinámicamente desde JSON -->
     <script>
         (function () {
-            // Calcular basePath para GitHub Pages
-            const basePath = window.location.pathname.includes('/otraCiudadWeb/') 
-                ? '/otraCiudadWeb' 
-                : '';
-
             const projectsList = document.getElementById('projectsList');
             
             // Mostrar mensaje de carga
             projectsList.innerHTML = '<p style="padding: 40px; text-align: center; color: #999;">Cargando proyectos...</p>';
 
             // Cargar el índice de proyectos
-            fetch(`${basePath}/content/projects-index.json`)
+            fetch('/content/projects-index.json')
                 .then(res => {
                     if (!res.ok) throw new Error('No se pudo cargar el índice de proyectos');
                     return res.json();
@@ -111,7 +106,7 @@
                         <a href="/projects/${project.slug}" class="projectCard">
                             <div class="projectCard__imgWrap">
                                 <img class="projectCard__img" 
-                                     src="${basePath}/${project.coverImage}" 
+                                     src="/${project.coverImage}" 
                                      alt="${project.title}" />
                             </div>
                             <h2 class="projectCard__title">${project.title}</h2>
