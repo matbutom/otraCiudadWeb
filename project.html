@@ -86,8 +86,18 @@
 
     <script>
         (function () {
+            // Obtener slug desde query parameter O desde la URL path
             const params = new URLSearchParams(window.location.search);
-            const projectSlug = params.get('project');
+            let projectSlug = params.get('project');
+            
+            // Si no hay query parameter, intentar obtener desde el path
+            if (!projectSlug) {
+                const pathParts = window.location.pathname.split('/').filter(Boolean);
+                // Si la URL es /projects/nombre-proyecto, el slug es el último segmento
+                if (pathParts[0] === 'projects' && pathParts[1]) {
+                    projectSlug = pathParts[1];
+                }
+            }
 
             if (!projectSlug) {
                 window.location.href = '/projects.html';

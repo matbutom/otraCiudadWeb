@@ -1,6 +1,6 @@
-# Redirects para páginas específicas primero
+# Redirects para páginas específicas
 /about      /about.html     200
 /contact    /contact.html   200
 
-# Redirect para proyectos con wildcard (debe ir DESPUÉS de /projects específico)
-/projects/:slug    /project.html?project=:slug    200
+# Rewrite para proyectos - usa splat y cambia project.html para aceptarlo
+/projects/*    /project.html?project=:splat    200
