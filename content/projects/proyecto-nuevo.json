@@ -1,0 +1,14 @@
+{
+  "coverImage": "assets/images/00.Plazas de Bolsillo_Santiago.JPG",
+  "slug": "proyecto-nuevo",
+  "client": "rafita",
+  "featured": true,
+  "order": 1,
+  "location": "Chile",
+  "title": "Proyecto Nuevo",
+  "images": [
+    "assets/images/02.Otra Ciudad_Paris.jpg"
+  ],
+  "description": "prueba",
+  "year": "2025"
+}
