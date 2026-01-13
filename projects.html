@@ -106,7 +106,7 @@
 
                     // Generar HTML para cada proyecto
                     projectsList.innerHTML = sortedProjects.map(project => `
-                        <a href="/projects/${project.slug}" class="projectCard">
+                        <a href="/projects/${project.slug}" class="projectCard" data-slug="${project.slug}">
                             <div class="projectCard__imgWrap">
                                 <img class="projectCard__img" 
                                      src="/${project.coverImage}" 
@@ -123,6 +123,16 @@
                             </div>
                         </a>
                     `).join('');
+
+                    // Forzar navegación con JavaScript
+                    document.querySelectorAll('.projectCard').forEach(card => {
+                        card.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const slug = card.getAttribute('data-slug');
+                            window.location.href = `/projects/${slug}`;
+                        });
+                    });
                 })
                 .catch(err => {
                     console.error('Error cargando proyectos:', err);
