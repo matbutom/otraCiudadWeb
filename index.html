@@ -101,7 +101,7 @@
                 })
                 .catch(e => console.error("Error cargando site settings:", e));
 
-            // 2. Cargar Proyectos - CORREGIDO: usar projects-index.json
+            // 2. Cargar Proyectos
             fetch("/content/projects-index.json")
                 .then(r => r.json())
                 .then(data => {
@@ -120,10 +120,20 @@
                         const link = `/projects/${p.slug}`;
                         const imgSrc = p.coverImage.startsWith('http') ? p.coverImage : ('/' + p.coverImage);
                         
+                        // Usar excerpt si existe, si no usar primeros 150 caracteres de description
+                        let desc = '';
+                        if (p.excerpt) {
+                            desc = p.excerpt;
+                        } else if (p.description) {
+                            // Eliminar markdown básico y limitar a 150 caracteres
+                            const plainText = p.description.replace(/[#*_\[\]]/g, '').trim();
+                            desc = plainText.length > 150 ? plainText.substring(0, 150) + '...' : plainText;
+                        }
+                        
                         return `
                         <div class="homeRow">
                             <article class="projItem">
-                                <p class="projItem__desc">${p.description || ''}</p>
+                                <p class="projItem__desc">${desc}</p>
                                 <div class="projItem__row">
                                     <h2 class="projItem__title">
                                         <a href="${link}">${p.title}</a>
